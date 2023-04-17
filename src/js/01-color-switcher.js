@@ -3,8 +3,6 @@ const startBtn = document.querySelector("button[data-start]");
 const stopBtn = document.querySelector("button[data-stop]");
 let interval = null;
 
-// startBtn.style.
-
 function getRandomHexColor() {
     return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, 0)}`;
 }
@@ -29,4 +27,3 @@ const onStopClick = () => {
 
 startBtn.addEventListener("click", onStartClick);
 stopBtn.addEventListener("click", onStopClick);
-
