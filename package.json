@@ -1,8 +1,8 @@
 {
-  "name": "parcel-project-template",
+  "name": "goit-js-hw-09",
   "version": "2.0.0",
   "description": "",
-  "homepage": "https://Ielithabeth.github.io/parcel-goit-js-hw-09",
+  "homepage": "https://Ielithabeth.github.io/goit-js-hw-09",
   "scripts": {
     "start": "parcel src/*.html",
     "build": "parcel build src/*.html --public-url /goit-js-hw-09/"
@@ -18,9 +18,8 @@
     "url": "https://github.com/goitacademy/parcel-project-template/issues"
   },
   "dependencies": {
-    "flatpickr": "^4.6.13",
-    "modern-normalize": "^1.1.0",
-    "notiflix": "^3.2.6"
+    "caniuse-lite": "^1.0.30001480",
+    "modern-normalize": "^1.1.0"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.6.0",
