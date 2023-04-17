@@ -1,17 +1,10 @@
+// imports
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+// import Notiflix from 'notiflix';
+// imports
 
-import Notiflix from 'notiflix';
-
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import { Report } from 'notiflix/build/notiflix-report-aio';
-import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
-import { Loading } from 'notiflix/build/notiflix-loading-aio';
-import { Block } from 'notiflix/build/notiflix-block-aio';
-
-
-const picker = document.querySelector("#datetime-picker");
-const startBtn = document.querySelector("button[data-start]");
+// main vars
 const options = {
     enableTime: true,
     time_24hr: true,
@@ -21,6 +14,9 @@ const options = {
       console.log(selectedDates[0]);
     },
 };
+
+const { enableTime, time_24hr, defaultDate, minuteIncrement } = options;
+
 function convertMs(ms) {
     // Number of milliseconds per unit of time
     const second = 1000;
@@ -38,6 +34,29 @@ function convertMs(ms) {
     const seconds = Math.floor((((ms % day) % hour) % minute) / second);
   
     return { days, hours, minutes, seconds };
-  }
+}
 
+const picker = document.querySelector("#datetime-picker");
+const startBtn = document.querySelector("button[data-start]");
+const counterValue = [...document.querySelectorAll(".value")];
+console.log(counterValue);
+
+let counter = 0;
 flatpickr(picker, options);
+// main vars
+
+startBtn.addEventListener("click", onStartClick());
+startBtn.disabled = true;
+
+function onStartClick() {
+    const intervalId = setInterval(() => {
+        counterValue[0].textContent = "00";
+        counterValue[1].textContent = "00";
+        counterValue[2].textContent = "00";
+        counterValue[3].textContent = "00";
+        
+        counter -= 1;
+    }, 1000)
+}
+
+console.log(options.defaultDate);
