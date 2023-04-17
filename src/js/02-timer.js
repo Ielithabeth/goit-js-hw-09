@@ -41,19 +41,20 @@ const startBtn = document.querySelector("button[data-start]");
 const counterValue = [...document.querySelectorAll(".value")];
 console.log(counterValue);
 
-let counter = 0;
+let counter = 10;
+let intervalId = null;
 flatpickr(picker, options);
 // main vars
 
 startBtn.addEventListener("click", onStartClick());
-startBtn.disabled = true;
+startBtn.disabled = false;
 
 function onStartClick() {
-    const intervalId = setInterval(() => {
+    intervalId = setInterval(() => {
         counterValue[0].textContent = "00";
         counterValue[1].textContent = "00";
         counterValue[2].textContent = "00";
-        counterValue[3].textContent = "00";
+        counterValue[3].textContent = counter;
         
         counter -= 1;
     }, 1000)
