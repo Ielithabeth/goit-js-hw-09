@@ -1,12 +1,20 @@
 import flatpickr from "flatpickr";
+import 'flatpickr/dist/flatpickr.min.css';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
+//main refs start
 const options = {
     enableTime: true,
     time_24hr: true,
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
-      console.log(selectedDates[0]);
+      const choosenDate = new Date();
+      if (selectedDates[0] - choosenDate > 0) {
+        startBtn.disabled = false;
+      } else {
+        Notify.failure("Please choose a date in the future");
+      }
     },
 };
 
@@ -29,13 +37,41 @@ function convertMs(ms) {
     return { days, hours, minutes, seconds };
 };
 
-const datetimePicker = document.querySelector("#datetime-picker");
-const timeValue = document.querySelectorAll(".value");
-const startBtn = document.querySelector("button[data-start]");
+const refs = {
+  datetimePicker: document.querySelector("#datetime-picker"),
+  timeValue: document.querySelectorAll(".value"),
+  startBtn: document.querySelector("button[data-start]"),
+}
 
-const days = document.querySelector("#datetime-picker");
-const hours = document.querySelector("#datetime-picker");
-const minutes = document.querySelector("#datetime-picker");
-const seconds = document.querySelector("#datetime-picker");
+const { datetimePicker, timeValue, startBtn } = refs;
+const pickr = flatpickr(datetimePicker, options);
+startBtn.disabled = true;
+let intervalId = null;
+//main refs end
 
-flatpickr(datetimePicker, options);
+startBtn.addEventListener("click", onStartClick);
+function onStartClick () {
+  startBtn.disabled = true;
+  const selectedDate = pickr.selectedDates[0];
+
+  intervalId = setInterval(() => {
+    const todaysDate = new Date();
+    const countdown = selectedDate - todaysDate;
+
+    if (!countdown) {
+      clearInterval(intervalId);
+    }
+    updateTimeValues(convertMs(countdown));
+  }, 1000)
+}
+
+function updateTimeValues ({ days, hours, minutes, seconds }) {
+  timeValue[0].textContent = addPadStart(days);
+  timeValue[1].textContent = addPadStart(hours);
+  timeValue[2].textContent = addPadStart(minutes);
+  timeValue[3].textContent = addPadStart(seconds);
+}
+
+function addPadStart(value) {
+  return String(value).padStart(2,0);
+}
