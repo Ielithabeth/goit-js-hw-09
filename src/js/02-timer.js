@@ -58,7 +58,7 @@ function onStartClick () {
     const todaysDate = new Date();
     const countdown = selectedDate - todaysDate;
 
-    if (!countdown) {
+    if (countdown < 0) {
       clearInterval(intervalId);
     }
     updateTimeValues(convertMs(countdown));
