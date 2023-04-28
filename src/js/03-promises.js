@@ -1,14 +1,10 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-const refs = {
-  form: document.querySelector('form'),
-  delay: this.form.delay.value,
-  step: this.form.step.value,
-  amount: this.form.amount.value,
-  createBtn: document.querySelector("button[data-create]"),
-};
-
-const { form, delay, step, amount, createBtn } = refs;
+const form = document.querySelector('form');
+const delay = this.form.delay.value;
+const step = this.form.step.value;
+const amount = this.form.amount.value;
+const createBtn = document.querySelector("button[data-create]");
 
 function createPromise(position, delay) {
   return new Promise((resolve, reject) => {
