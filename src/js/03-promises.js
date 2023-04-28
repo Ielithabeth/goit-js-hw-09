@@ -1,8 +1,44 @@
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
+const refs = {
+  form: document.querySelector('form'),
+  delay: this.form.delay.value,
+  step: this.form.step.value,
+  amount: this.form.amount.value,
+  createBtn: document.querySelector("button[data-create]"),
+};
+
+const { form, delay, step, amount, createBtn } = refs;
+
 function createPromise(position, delay) {
-  const shouldResolve = Math.random() > 0.3;
-  if (shouldResolve) {
-    // Fulfill
-  } else {
-    // Reject
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const shouldResolve = Math.random() > 0.3;
+      if (shouldResolve) {
+        resolve({ position, delay });
+      } else {
+        reject({ position, delay });
+      }
+    }, delay);
+  });
+}
+
+createBtn.addEventListener('click', onCreateClick);
+function onCreateClick(e) {
+  e.preventDefault();
+
+  for (let i = 1; i <= amount; i += 1) {
+    delay += step;
+    createPromise(i, delay).then(onSuccess).catch(onError);
+
+    form.reset();
   }
+}
+
+function onError({ position, delay }) {
+  Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
+}
+
+function onSuccess({ position, delay }) {
+  Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
 }
