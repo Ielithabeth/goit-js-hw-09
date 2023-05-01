@@ -1,10 +1,11 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-const form = document.querySelector('form');
-let delay = form.delay.value;
-const step = form.step.value;
-const amount = form.amount.value;
-const createBtn = document.querySelector("button[data-create]");
+const refs = {
+  form: document.querySelector('.form'),
+  createBtn: document.querySelector("button[data-create]"),
+}
+
+const { form, createBtn } = refs;
 
 function createPromise(position, delay) {
   return new Promise((resolve, reject) => {
@@ -23,27 +24,29 @@ function createPromise(position, delay) {
 createBtn.addEventListener('click', onCreateClick);
 function onCreateClick(e) {
   e.preventDefault();
-  for (let position = 1; position <= amount; position += 1) {
+
+  const formData = new FormData(form);
+  const dataParams = {};
+  
+  for (const [key, value] of formData.entries()) {
+    dataParams[key] = Number(value);
+  }
+  
+  let { amount, step, delay } = dataParams;
+  
+  for (let i = 1; i <= amount; i += 1) {
     delay += step;
 
-    createPromise(position, delay)
-    .then(() => {
-      Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
-    })
-    .catch(() => {
-      Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
-    });
+    createPromise(i, delay).then(onSuccess).catch(onError);
 
     form.reset();
   }
-}
+};
 
-// function onError({ position, delay }) {
-//   Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
-// }
-
-// function onSuccess({ position, delay }) {
-//   delay += step;
-
-//   Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
-// }
+function onError({ position, delay }) {
+  Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
+};
+  
+function onSuccess({ position, delay }) {
+  Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
+};
